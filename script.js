@@ -5,7 +5,9 @@ const bgMusic = document.getElementById("bgMusic");
 const songPicker = document.getElementById("songPicker");
 const currentSongLabel = document.getElementById("currentSongLabel");
 const musicToggleBtn = document.getElementById("musicToggleBtn");
+const bookWindow = document.getElementById("bookWindow");
 const bookTrack = document.getElementById("bookTrack");
+const bookPages = Array.from(document.querySelectorAll(".book-page"));
 const pageTabs = Array.from(document.querySelectorAll(".page-tab"));
 const pageDots = Array.from(document.querySelectorAll(".page-dot"));
 const prevPage = document.getElementById("prevPage");
@@ -69,6 +71,13 @@ const renderPage = () => {
 
   prevPage.disabled = currentPage === 0;
   nextPage.disabled = currentPage === pageTabs.length - 1;
+
+  const activePage = bookPages[currentPage];
+  if (!activePage || !bookWindow) return;
+
+  requestAnimationFrame(() => {
+    bookWindow.style.height = `${activePage.offsetHeight}px`;
+  });
 };
 
 const goToPage = (index) => {
@@ -155,3 +164,4 @@ bookTrack.addEventListener(
 
 applyTrack(currentTrackIndex);
 renderPage();
+window.addEventListener("resize", renderPage);
