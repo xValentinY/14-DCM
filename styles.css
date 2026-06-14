@@ -30,7 +30,8 @@ body {
 }
 
 body.is-locked {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .ambient {
@@ -218,6 +219,8 @@ body.is-unlocked .album-shell {
 .open-book-btn {
   width: 100%;
   margin-top: 0.95rem;
+  position: sticky;
+  bottom: max(0.8rem, env(safe-area-inset-bottom));
   border: 0;
   border-radius: 999px;
   padding: 0.95rem 1.15rem;
@@ -228,6 +231,7 @@ body.is-unlocked .album-shell {
   box-shadow: 0 14px 28px rgba(143, 58, 77, 0.3);
   cursor: pointer;
   animation: pulse-open 1.9s ease-in-out infinite;
+  z-index: 2;
 }
 
 .open-help {
