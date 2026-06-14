@@ -1,12 +1,15 @@
 const body = document.body;
 const openBook = document.getElementById("openBook");
-const intro = document.getElementById("intro");
 const album = document.getElementById("album");
-const navButtons = Array.from(document.querySelectorAll(".shell-jump"));
-const revealItems = Array.from(document.querySelectorAll(".reveal"));
 const bgMusic = document.getElementById("bgMusic");
 const songPicker = document.getElementById("songPicker");
 const currentSongLabel = document.getElementById("currentSongLabel");
+const musicToggleBtn = document.getElementById("musicToggleBtn");
+const bookTrack = document.getElementById("bookTrack");
+const pageTabs = Array.from(document.querySelectorAll(".page-tab"));
+const pageDots = Array.from(document.querySelectorAll(".page-dot"));
+const prevPage = document.getElementById("prevPage");
+const nextPage = document.getElementById("nextPage");
 
 const playlist = Array.from(songPicker.options).map((option) => ({
   label: option.textContent.trim(),
@@ -17,6 +20,7 @@ let currentTrackIndex = Math.max(
   0,
   playlist.findIndex((track) => track.src === songPicker.value)
 );
+let currentPage = 0;
 
 const applyTrack = (index) => {
   currentTrackIndex = index;
@@ -30,7 +34,7 @@ const playCurrentTrack = async () => {
   try {
     await bgMusic.play();
   } catch (_error) {
-    // iPhone normalmente bloquea autoplay con sonido hasta la primera interaccion.
+    // Safari en iPhone puede bloquear autoplay hasta la interaccion del usuario.
   }
 };
 
@@ -52,30 +56,33 @@ const playRandomNext = async () => {
   await playCurrentTrack();
 };
 
-const setActiveNav = (targetId) => {
-  navButtons.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.target === targetId);
+const renderPage = () => {
+  bookTrack.style.transform = `translateX(-${currentPage * 25}%)`;
+
+  pageTabs.forEach((tab, index) => {
+    tab.classList.toggle("is-active", index === currentPage);
   });
+
+  pageDots.forEach((dot, index) => {
+    dot.classList.toggle("is-active", index === currentPage);
+  });
+
+  prevPage.disabled = currentPage === 0;
+  nextPage.disabled = currentPage === pageTabs.length - 1;
 };
 
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.18,
-  }
-);
+const goToPage = (index) => {
+  currentPage = Math.max(0, Math.min(index, pageTabs.length - 1));
+  renderPage();
+};
 
-revealItems.forEach((item) => revealObserver.observe(item));
+const updateMusicToggle = () => {
+  musicToggleBtn.textContent = bgMusic.paused ? "Reproducir" : "Pausar";
+};
 
-applyTrack(currentTrackIndex);
 bgMusic.volume = 0.9;
+currentSongLabel.textContent = playlist[currentTrackIndex].label;
+updateMusicToggle();
 
 songPicker.addEventListener("change", () => {
   playSelectedTrack();
@@ -85,47 +92,66 @@ bgMusic.addEventListener("ended", () => {
   playRandomNext();
 });
 
+bgMusic.addEventListener("play", updateMusicToggle);
+bgMusic.addEventListener("pause", updateMusicToggle);
+
+musicToggleBtn.addEventListener("click", async () => {
+  if (bgMusic.paused) {
+    await playCurrentTrack();
+  } else {
+    bgMusic.pause();
+  }
+  updateMusicToggle();
+});
+
 openBook.addEventListener("click", async () => {
   body.classList.remove("is-locked");
   body.classList.add("is-unlocked");
   album.setAttribute("aria-hidden", "false");
+  goToPage(0);
   await playSelectedTrack();
-  intro.scrollIntoView({ behavior: "smooth", block: "start" });
+  album.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      album.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 180);
+pageTabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => {
+    goToPage(index);
   });
 });
 
-navButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const target = document.getElementById(button.dataset.target);
-    if (!target) return;
-    setActiveNav(button.dataset.target);
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+prevPage.addEventListener("click", () => {
+  goToPage(currentPage - 1);
 });
 
-const sectionObserver = new IntersectionObserver(
-  (entries) => {
-    const visibleEntry = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+nextPage.addEventListener("click", () => {
+  goToPage(currentPage + 1);
+});
 
-    if (visibleEntry) {
-      setActiveNav(visibleEntry.target.id);
-    }
+let touchStartX = 0;
+let touchEndX = 0;
+
+bookTrack.addEventListener(
+  "touchstart",
+  (event) => {
+    touchStartX = event.changedTouches[0].screenX;
   },
-  {
-    threshold: [0.35, 0.6, 0.8],
-    rootMargin: "-15% 0px -30% 0px",
-  }
+  { passive: true }
 );
 
-document
-  .querySelectorAll("#editorial, #mensajes, #google")
-  .forEach((section) => sectionObserver.observe(section));
+bookTrack.addEventListener(
+  "touchend",
+  (event) => {
+    touchEndX = event.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) < 40) return;
+    if (diff > 0) {
+      goToPage(currentPage + 1);
+    } else {
+      goToPage(currentPage - 1);
+    }
+  },
+  { passive: true }
+);
 
-playCurrentTrack();
+applyTrack(currentTrackIndex);
+renderPage();
