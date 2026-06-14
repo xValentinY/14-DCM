@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Nuestro Bello Click</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=Parisienne&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="is-locked">
+    <audio id="bgMusic" preload="auto"></audio>
+    <div class="ambient ambient-left"></div>
+    <div class="ambient ambient-right"></div>
+
+    <main class="experience">
+      <section class="intro-shell" id="intro">
+        <div class="shell-header">
+          <div class="shell-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <nav class="shell-nav" aria-label="Navegacion">
+            <button type="button" class="shell-link is-active">Portada</button>
+            <button type="button" class="shell-link" disabled>Album</button>
+          </nav>
+        </div>
+
+        <div class="cover-card">
+          <div class="cover-photo-wrap">
+            <img
+              src="./assets/images/cover.jpeg"
+              alt="Foto de portada de aniversario"
+              class="cover-photo"
+            />
+            <div class="cover-photo-glow"></div>
+          </div>
+
+          <div class="cover-copy">
+            <p class="cover-kicker">14 de febrero de 2024</p>
+            <h1>Nuestro bello click</h1>
+            <p class="cover-subtitle">
+              Dos años, cuatro meses y un montón de recuerdos que siguen
+              viéndose como casa.
+            </p>
+            <p class="cover-note">
+              Hice esta mini revista para nosotros, para que cada foto vuelva
+              a decir lo mucho que te amo.
+            </p>
+          </div>
+
+          <div class="music-picker">
+            <label for="songPicker">Cancion para abrir el album</label>
+            <select id="songPicker" class="song-picker">
+              <option value="./assets/music/my-one-and-only-love.mp3">
+                My One And Only Love
+              </option>
+              <option value="./assets/music/forever.mp3">Forever</option>
+              <option value="./assets/music/ser-parte.mp3">Ser Parte</option>
+              <option value="./assets/music/woman.mp3">Woman</option>
+              <option value="./assets/music/neo-roneo.mp3">neo roneo</option>
+            </select>
+          </div>
+
+          <button class="open-book-btn" id="openBook" type="button">
+            Toca aqui para abrir nuestro album
+          </button>
+          <p class="open-help">Presiona ese boton para pasar de la portada al album.</p>
+        </div>
+      </section>
+
+      <section class="album-shell" id="album" aria-hidden="true">
+        <div class="shell-header">
+          <div class="shell-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <nav class="shell-nav shell-nav-live" aria-label="Secciones del album">
+            <button type="button" class="shell-link shell-jump is-active" data-target="editorial">
+              Editorial
+            </button>
+            <button type="button" class="shell-link shell-jump" data-target="mensajes">
+              Mensajes
+            </button>
+            <button type="button" class="shell-link shell-jump" data-target="google">
+              Recuerdos
+            </button>
+          </nav>
+        </div>
+
+        <div class="tablet-frame">
+          <div class="tablet-screen">
+            <div class="player-chip">
+              <span>♪ Sonando:</span>
+              <strong id="currentSongLabel">My One And Only Love</strong>
+            </div>
+
+            <section class="mag-section editorial" id="editorial">
+              <div class="editorial-copy reveal">
+                <span class="eyebrow">Edicion especial</span>
+                <h2>Para mi persona favorita</h2>
+                <p>
+                  No sabia lo enamorada que estaba hasta que me vi queriendo
+                  guardar cada detalle de nosotros: las salidas sencillas, los
+                  besitos robados, las fotos improvisadas y hasta nuestros
+                  momentos mas random.
+                </p>
+                <p>
+                  Si esta historia tuviera nombre, seria exactamente este:
+                  <strong>Nuestro bello click</strong>.
+                </p>
+              </div>
+
+              <div class="editorial-photo-stack reveal">
+                <figure class="main-polaroid tilt-left">
+                  <img src="./assets/images/IMG_0800.jpeg" alt="Foto abrazados" />
+                  <figcaption>Mi lugar favorito</figcaption>
+                </figure>
+                <figure class="mini-polaroid top-right">
+                  <img src="./assets/images/IMG_6112.jpeg" alt="Foto juntos de noche" />
+                </figure>
+                <figure class="mini-polaroid bottom-left">
+                  <img src="./assets/images/IMG_0809.jpeg" alt="Foto juntos con bebe" />
+                </figure>
+              </div>
+            </section>
+
+            <section class="mag-section messages-grid" id="mensajes">
+              <article class="message-card reveal">
+                <div class="message-header">
+                  <span>MENSAJES</span>
+                  <span class="script-accent">favoritos</span>
+                </div>
+                <div class="chat-bubbles">
+                  <p class="bubble sent">Gracias por estos 2 años y 4 meses conmigo.</p>
+                  <p class="bubble received">Gracias a ti por ser mi paz bonita.</p>
+                  <p class="bubble sent">Contigo hasta lo mas simple se vuelve especial.</p>
+                  <p class="bubble received">Y quiero seguir llenando la galeria contigo.</p>
+                </div>
+              </article>
+
+              <article class="quote-card reveal">
+                <span class="eyebrow">Lo que siento por ti</span>
+                <h3>Amarte se siente como volver a casa.</h3>
+                <p>
+                  Eres mi foto favorita, mi mensaje favorito y la coincidencia
+                  mas bonita que me paso.
+                </p>
+              </article>
+            </section>
+
+            <section class="mag-section search-layout" id="google">
+              <div class="search-copy reveal">
+                <div class="fake-search">
+                  <span class="dot green"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot red"></span>
+                  <strong>Google</strong>
+                </div>
+                <h3>Que es la felicidad?</h3>
+                <p>
+                  Facil: nuestras fotos juntos, tus cachetitos cuando sonries,
+                  los besitos, las noches en la plaza, las salidas al agua y
+                  cada momento que termina siendo recuerdo bonito.
+                </p>
+              </div>
+
+              <div class="gallery-grid reveal">
+                <figure class="gallery-card tall">
+                  <img src="./assets/images/IMG_0058.jpeg" alt="Selfie juntos" />
+                </figure>
+                <figure class="gallery-card">
+                  <img src="./assets/images/IMG_0062.jpeg" alt="Selfie divertida" />
+                </figure>
+                <figure class="gallery-card">
+                  <img src="./assets/images/IMG_0641.jpeg" alt="Foto juntos cerca" />
+                </figure>
+                <figure class="gallery-card">
+                  <img src="./assets/images/IMG_2724.jpeg" alt="Selfie acostados" />
+                </figure>
+              </div>
+            </section>
+
+            <section class="mag-section memory-strip">
+              <div class="memory-strip-header reveal">
+                <span class="eyebrow">Nuestros momentos</span>
+                <h3>Pequenas escenas que no quiero olvidar</h3>
+              </div>
+
+              <div class="memory-scroll reveal">
+                <figure class="memory-card">
+                  <img src="./assets/images/0992361a.jpeg" alt="Foto de besito lejana" />
+                  <figcaption>Hasta las fotos borrosas me encantan si sales conmigo.</figcaption>
+                </figure>
+                <figure class="memory-card">
+                  <img src="./assets/images/IMG_9538.jpeg" alt="Foto abrazados" />
+                  <figcaption>Mis ratitos favoritos siempre te encuentran.</figcaption>
+                </figure>
+                <figure class="memory-card">
+                  <img src="./assets/images/IMG_6792.png" alt="Captura de juego" />
+                  <figcaption>Tambien amo nuestras tonterias y aventuras.</figcaption>
+                </figure>
+                <figure class="memory-card">
+                  <img src="./assets/images/62B85808.png" alt="Foto mascarillas" />
+                  <figcaption>Hasta cuidarnos juntos se siente divertido.</figcaption>
+                </figure>
+                <figure class="memory-card">
+                  <img src="./assets/images/3115f495.jpeg" alt="Foto en corazon" />
+                  <figcaption>Siempre hay una vista bonita cuando estoy contigo.</figcaption>
+                </figure>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
